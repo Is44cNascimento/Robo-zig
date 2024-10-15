@@ -1,0 +1,17 @@
+Esse é um projeto pessoal de robótica, onde o objetivo é montar um robô que se mova sozinho e se tiver um obstáculo ele consiga dar a volta.
+Esse projeto vai ser criado em uma “ESP32”, pois tenho o objetivo de criar algo maior futuramente e essa plataforma me permite isso.
+
+
+
+*Lista de peças:
+
+-Chassi de alumínio 
+-ESP32
+-Placa de expansão ESP32
+-Sensor ultrassônico
+-2x motores
+-Ponte H
+-Power bank
+-2x rodas
+-Tela Oled
+
