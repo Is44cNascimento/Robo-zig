@@ -13,7 +13,7 @@ Adafruit_SSD1306 display(OLED_RESET);
 #define pinMot2B  27
 
 
-Ultrasonic ultrassom (21,19);
+Ultrasonic ultrassom (5,18);
 
 long distancia;
 
