@@ -4,13 +4,22 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define OLED_RESET -1
-Adafruit_SSD1306 display(OLED_RESET);
 
-#define pinMot1A  13
+
+#define LARGURA_OLED 128
+#define ALTURA_OLED 64
+//#define SDA_OLED 21
+//#define SCL_OlED 22
+
+
+
+#define OLED_RESET -1
+Adafruit_SSD1306 display(LARGURA_OLED, ALTURA_OLED, &Wire, OLED_RESET);
+
+#define pinMot1A 13
 #define pinMot1B 12
-#define pinMot2A  14
-#define pinMot2B  27
+#define pinMot2A 14
+#define pinMot2B 27
 
 
 Ultrasonic ultrassom (5,18);
@@ -49,6 +58,7 @@ distancia = ultrassom.Ranging (CM);
   while (true){
     display.println (distancia + "CM" );
     display.clearDisplay();
+    delay(100);
   }
 
 
