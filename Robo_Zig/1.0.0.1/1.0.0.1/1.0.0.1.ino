@@ -1,4 +1,4 @@
-#include <Ultrasonic.h>
+
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -20,8 +20,8 @@ const int PINO_ECHO = 2; // Pino D2 conectado ao ECHO do HC-SR04
 long distancia;
 
 void setup() {
-  pinMode(PINO_TRIG, OUTPUT); // Configura o pino TRIG como saída
-  pinMode(PINO_ECHO, INPUT); // Configura o pino ECHO como entrada
+  pinMode(PINO_TRIG, OUTPUT); 
+  pinMode(PINO_ECHO, INPUT); 
   
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   Serial.begin(115200);
