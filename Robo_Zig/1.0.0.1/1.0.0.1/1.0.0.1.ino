@@ -14,10 +14,15 @@ Adafruit_SSD1306 display(LARGURA_OLED, ALTURA_OLED, &Wire, OLED_RESET);
 #define pinMot2A 14
 #define pinMot2B 27
 
-Ultrasonic ultrassom(5, 18);
+const int PINO_TRIG = 4; // Pino D4 conectado ao TRIG do HC-SR04
+const int PINO_ECHO = 2; // Pino D2 conectado ao ECHO do HC-SR04
+
 long distancia;
 
 void setup() {
+  pinMode(PINO_TRIG, OUTPUT); // Configura o pino TRIG como saída
+  pinMode(PINO_ECHO, INPUT); // Configura o pino ECHO como entrada
+  
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   Serial.begin(115200);
 
@@ -31,11 +36,21 @@ void setup() {
 
 void loop() {
   const int velocidade = 200;
-  distancia = ultrassom.Ranging(CM);
-
+  
+    
+    digitalWrite(PINO_TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(PINO_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PINO_TRIG, LOW);
+  
+  long duracao = pulseIn(PINO_ECHO, HIGH);  
+  float distancia = (duracao * 0.0343) / 2;
   Serial.print("Distância: ");
   Serial.print(distancia);
-  Serial.println(" CM");
+  Serial.println(" cm");
+  
+  delay(1000); 
 
   display.clearDisplay();
   display.setCursor(0, 0);
@@ -47,7 +62,7 @@ void loop() {
   display.println(" CM");
   display.display();  
 
-  delay(500);
+  delay(100);
 
  
   if (distancia <= 5) {
