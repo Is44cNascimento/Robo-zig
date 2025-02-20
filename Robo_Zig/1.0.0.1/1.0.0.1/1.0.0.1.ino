@@ -1,17 +1,10 @@
-
 #include <Ultrasonic.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-
-
 #define LARGURA_OLED 128
 #define ALTURA_OLED 64
-//#define SDA_OLED 21
-//#define SCL_OlED 22
-
-
 
 #define OLED_RESET -1
 Adafruit_SSD1306 display(LARGURA_OLED, ALTURA_OLED, &Wire, OLED_RESET);
@@ -21,144 +14,103 @@ Adafruit_SSD1306 display(LARGURA_OLED, ALTURA_OLED, &Wire, OLED_RESET);
 #define pinMot2A 14
 #define pinMot2B 27
 
-
-Ultrasonic ultrassom (5,18);
-
+Ultrasonic ultrassom(5, 18);
 long distancia;
 
-
-
 void setup() {
-  
-
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  Serial.begin(9600);
+  Serial.begin(115200);
 
-  pinMode(pinMot1A , OUTPUT);
-  pinMode(pinMot1B , OUTPUT);
-  pinMode(pinMot2A , OUTPUT);
-  pinMode(pinMot2B , OUTPUT);
-  
-display.clearDisplay();
+  pinMode(pinMot1A, OUTPUT);
+  pinMode(pinMot1B, OUTPUT);
+  pinMode(pinMot2A, OUTPUT);
+  pinMode(pinMot2B, OUTPUT);
+
+  display.clearDisplay();
 }
 
 void loop() {
+  const int velocidade = 200;
+  distancia = ultrassom.Ranging(CM);
 
-
-const int velocidade = 200;
-distancia = ultrassom.Ranging (CM);
-
+  Serial.print("Distância: ");
   Serial.print(distancia);
-  Serial.println("CM");
-  delay(100);
+  Serial.println(" CM");
 
-  display.println ("Zig");
-  
-  
-  while (true){
-    display.println (distancia + "CM" );
-    display.clearDisplay();
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.println("Zig");
+  display.print("Distancia: ");
+  display.print(distancia);
+  display.println(" CM");
+  display.display();  
+
+  delay(500);
+
+ 
+  if (distancia <= 5) {
+    giro();
+    delay(1000);
+  } else if (distancia >= 50) {
+    esquerda();
+    delay(300);
+  } else if (distancia >= 30) {
+    direita();
+    delay(300);
+  } else if (distancia >= 8) {
+    frente();
     delay(100);
-  }
-
-
-
-  while (distancia<= 5){
-     trezentos_e_sessenta;
-     delay (1000);
-
-  }
-  
-
-
-   if (distancia >= 8 ) {
-     
-     frente;
-      delay(0);
-
-     esquerda;
-     delay (100); 
-      
-    } 
-
-
-    if (distancia >= 50 ){
-        esquerda;
-        delay (300);
-    }
-
-    if (distancia >= 30){
-      direita;
-      delay(300);
-    }
-
-    
-  if (distancia <= 8) {
-    
-    para;
+  } else {
+    para();
     delay(100);
-    
-    voltar;
+    voltar();
     delay(450);
-
-    direita;
-    delay (500);
-    
-  } 
-  
-  
-}
-
-
-
-void para (void) {
-  analogWrite ( pinMot1A, 0);
-  analogWrite ( pinMot1B, 0);
-  analogWrite ( pinMot2A, 0); 
-  analogWrite ( pinMot2B, 0);
-
-}
-
-void frente (void) {
-
- analogWrite ( pinMot1A, 200);
-  analogWrite ( pinMot1B, 0);
-  analogWrite ( pinMot2A, 200); 
-  analogWrite ( pinMot2B, 0);
-
-}
-
-void esquerda (void) {
- analogWrite ( pinMot1A, 150);
-  analogWrite ( pinMot1B, 0);
-  analogWrite ( pinMot2A, 0); 
-  analogWrite ( pinMot2B, 100);
-}
-
-
-void direita (void) {
-  analogWrite ( pinMot1A, 0);
-  analogWrite ( pinMot1B, 150);
-  analogWrite ( pinMot2A, 100); 
-  analogWrite ( pinMot2B, 0);
-}
-
-void voltar (void) {
-   analogWrite ( pinMot1A, 0);
-    analogWrite ( pinMot1B, 200);
-    analogWrite ( pinMot2A, 0); 
-    analogWrite ( pinMot2B, 200);
-}
-
-
-void  trezentos_e_sessenta(void){
-   
-    analogWrite ( pinMot1B, 200);
-    analogWrite ( pinMot2A, 200); 
-    delay (500);
-
-    analogWrite ( pinMot2B, 200);
-     analogWrite ( pinMot1A, 200);
-
-     delay(500);
+    direita();
+    delay(500);
   }
+}
+
+void para() {
+  digitalWrite(pinMot1A, LOW);
+  digitalWrite(pinMot1B, LOW);
+  digitalWrite(pinMot2A, LOW);
+  digitalWrite(pinMot2B, LOW);
+}
+
+void frente() {
+  digitalWrite(pinMot1A, HIGH);
+  digitalWrite(pinMot1B, LOW);
+  digitalWrite(pinMot2A, HIGH);
+  digitalWrite(pinMot2B, LOW);
+}
+
+void esquerda() {
+  digitalWrite(pinMot1A, HIGH);
+  digitalWrite(pinMot1B, LOW);
+  digitalWrite(pinMot2A, LOW);
+  digitalWrite(pinMot2B, HIGH);
+}
+
+void direita() {
+  digitalWrite(pinMot1A, LOW);
+  digitalWrite(pinMot1B, HIGH);
+  digitalWrite(pinMot2A, HIGH);
+  digitalWrite(pinMot2B, LOW);
+}
+
+void voltar() {
+  digitalWrite(pinMot1A, LOW);
+  digitalWrite(pinMot1B, HIGH);
+  digitalWrite(pinMot2A, LOW);
+  digitalWrite(pinMot2B, HIGH);
+}
+
+void giro() {
+  digitalWrite(pinMot1A, HIGH);
+  digitalWrite(pinMot1B, HIGH);
+  digitalWrite(pinMot2A, HIGH);
+  digitalWrite(pinMot2B, HIGH);
+  delay(500);
+}
